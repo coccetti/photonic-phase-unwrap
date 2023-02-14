@@ -8,7 +8,7 @@ import numpy as np
 from skimage.restoration import unwrap_phase
 from skimage import filters
 
-measured_complex_field = np.load('data/measured_complex_field.npy')
+measured_complex_field = np.load('data/measured_complex_field_2.npy')
 
 # Let's look at the data
 print('dim =', measured_complex_field.ndim)
@@ -29,10 +29,10 @@ measured_phase_denoise = filters.gaussian(measured_phase, sigma=0.4)
 
 # Perform phase unwrapping
 # 1D
-unwrapped_phase = np.unwrap(4*measured_phase[600])/4
+unwrapped_phase = np.unwrap(8*measured_phase[600])
 # 2D
-measured_phase_unwrapped_skimage = unwrap_phase(4*measured_phase) / 8
-measured_phase_denoise_unwrapped_skimage = unwrap_phase(4*measured_phase_denoise) / 8
+measured_phase_unwrapped_skimage = unwrap_phase(measured_phase)
+measured_phase_denoise_unwrapped_skimage = unwrap_phase(measured_phase_denoise)
 
 # Plot measured_phase 2D
 fig, ((ax1, ax2), (ax3, ax4)) = subplots(2, 2)
@@ -65,13 +65,13 @@ ax1.plot(x_hor, measured_phase[600])
 ax2.set_title('Measured Phase 1D Gaussian denoise')
 ax2.plot(x_hor, measured_phase_denoise[600])
 
-ax3.set_title('Measured Phase Unwrapped with np.angle (forced)')
-ax3.plot(x_hor, measured_phase_unwrapped_skimage[600])
+ax3.set_title('Measured Phase Unwrapped with np.angle')
+ax3.plot(x_hor, unwrapped_phase)
 
 ax4.set_title('Measured Phase Unwrapped with Scikit-image 2D')
-ax4.plot(x_hor, unwrapped_phase)
+ax4.plot(x_hor, measured_phase_unwrapped_skimage[600])
 
-ax5.set_title('Measured Phase denoise Unwrapped (forced)')
+ax5.set_title('Measured Phase denoise Unwrapped')
 ax5.plot(x_hor, measured_phase_denoise_unwrapped_skimage[600])
 
 fig.tight_layout(pad=1.0)
