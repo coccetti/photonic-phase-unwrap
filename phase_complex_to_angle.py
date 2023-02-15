@@ -5,7 +5,7 @@ __copyright__ = "Copyright 2022: CREF, Centro Ricerche Enrico Fermi, www.cref.it
 
 import matplotlib.pyplot as plt
 import numpy as np
-measured_complex_field = np.load('data/measured_complex_field.npy')
+measured_complex_field = np.load('data/measured_complex_field_2.npy')
 
 # Let's look at the data
 print('dim =', measured_complex_field.ndim)
@@ -39,7 +39,7 @@ plt.show()
 # plt.show()
 
 # Unwrap phase
-unwrapped_phase = np.unwrap(4*measured_phase[600])/4
+unwrapped_phase = np.unwrap(measured_phase[600], discont=np.pi, axis=0)
 x_hor = np.arange(1920)
 fig, (ax1, ax2) = plt.subplots(2)
 fig.suptitle('Forcing unwrapping')

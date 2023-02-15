@@ -29,7 +29,7 @@ measured_phase_denoise = filters.gaussian(measured_phase, sigma=0.4)
 
 # Perform phase unwrapping
 # 1D
-unwrapped_phase = np.unwrap(8*measured_phase[600])
+unwrapped_phase = np.unwrap(measured_phase[600], discont=np.pi, axis=0)
 # 2D
 measured_phase_unwrapped_skimage = unwrap_phase(measured_phase)
 measured_phase_denoise_unwrapped_skimage = unwrap_phase(measured_phase_denoise)
