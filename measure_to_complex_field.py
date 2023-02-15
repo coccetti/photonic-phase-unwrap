@@ -9,9 +9,9 @@ import numpy as np
 frames = np.load('data/I_allframes.npy')
 phases = np.load('data/allphases.npy') / np.pi
 frames = frames.astype(np.float32)
-
 print('Phases array =', phases)
 
+# Save complex field
 phi = frames[:,:,[0,2,4,6]]
 print(phi.dtype)
 complex_field = (phi[:,:,[0]] - phi[:,:,[2]]) + 1j * (phi[:,:,[1]] - phi[:,:,[3]])
