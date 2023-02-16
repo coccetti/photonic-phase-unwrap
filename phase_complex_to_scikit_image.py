@@ -5,7 +5,6 @@ __copyright__ = "Copyright 2022: CREF, Centro Ricerche Enrico Fermi, www.cref.it
 
 from matplotlib.pyplot import colorbar, show, subplots, cm
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import axes3d
 import numpy as np
 from skimage.restoration import unwrap_phase
 from skimage import filters
@@ -94,14 +93,14 @@ fig.tight_layout(pad=1.0)
 X, Y = np.meshgrid(x_hor, y_ver)
 fig = plt.figure()
 ax6 = fig.add_subplot(111, projection='3d')
-# ax6.plot_wireframe(X, Y, measured_phase_unwrapped_skimage)
-ax6.plot_surface(X, Y, measured_phase_denoise_unwrapped_skimage, cmap=cm.hsv)
+# ax6.plot_wireframe(X, Y, measured_phase_unwrapped_skimage, rstride=100, cstride=100, linewidth=0.2)
+img_3D = ax6.plot_surface(X, Y, measured_phase_denoise_unwrapped_skimage, cmap=cm.hsv)
+bar_3D = colorbar(img_3D)
+bar_3D.set_label('Phase (rad)')
 ax6.set_xlabel('Pixel X')
 ax6.set_ylabel('Pixel Y')
 ax6.set_zlabel('Phase (rad)')
-#ax6.axes.set_xlim3d(left=100, right=1800)
-#ax6.axes.set_ylim3d(bottom=0, top=1199)
+# ax6.axes.set_xlim3d(left=100, right=1800)
+# ax6.axes.set_ylim3d(bottom=0, top=1199)
 ax6.axes.set_zlim3d(bottom=-2*np.pi, top=2*np.pi)
-
-
 plt.show()
