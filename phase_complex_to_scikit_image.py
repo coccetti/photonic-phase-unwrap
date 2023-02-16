@@ -4,6 +4,8 @@
 __copyright__ = "Copyright 2022: CREF, Centro Ricerche Enrico Fermi, www.cref.it"
 
 from matplotlib.pyplot import colorbar, show, subplots, cm
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import axes3d
 import numpy as np
 from skimage.restoration import unwrap_phase
 from skimage import filters
@@ -11,18 +13,28 @@ from skimage import filters
 measured_complex_field = np.load('data/measured_complex_field_2.npy')
 
 # Let's look at the data
-print('dim =', measured_complex_field.ndim)
-print('shape =', measured_complex_field.shape)
-print('dtype =', measured_complex_field.dtype)
-print('first line =', measured_complex_field[0])
-print('first number =', measured_complex_field[0][0])
+print('measured_complex_field:')
+print('\tdim =', measured_complex_field.ndim)
+print('\tshape =', measured_complex_field.shape)
+print('\tdtype =', measured_complex_field.dtype)
+print('\tfirst line =', measured_complex_field[0])
+print('\tfirst number =', measured_complex_field[0][0])
+
+measured_complex_field = measured_complex_field.reshape(1200, 1920)
+print('measured_complex_field:')
+print('\tdim =', measured_complex_field.ndim)
+print('\tshape =', measured_complex_field.shape)
+print('\tdtype =', measured_complex_field.dtype)
+print('\tfirst line =', measured_complex_field[0])
+print('\tfirst number =', measured_complex_field[0][0])
 
 # Compute the phase
 measured_phase = np.angle(measured_complex_field)
-print('first line =', measured_phase[0])
-print('first number =', measured_phase[0][0])
-print('min =', measured_phase.min())
-print('max =', measured_phase.max())
+print('measured_phase:')
+print('\tfirst line =', measured_phase[0])
+print('\tfirst number =', measured_phase[0][0])
+print('\tmin =', measured_phase.min())
+print('\tmax =', measured_phase.max())
 
 # Denoise with a Gaussian filter
 measured_phase_denoise = filters.gaussian(measured_phase, sigma=0.4)
@@ -55,6 +67,7 @@ fig.tight_layout(pad=1.0)
 # plt.show()
 
 # Plot 1D Phases
+y_ver = np.arange(1200)
 x_hor = np.arange(1920)
 fig, (ax1, ax2, ax3, ax4, ax5) = subplots(5)
 fig.suptitle('Plot 1D Phases')
@@ -75,4 +88,20 @@ ax5.set_title('Measured Phase denoise Unwrapped')
 ax5.plot(x_hor, measured_phase_denoise_unwrapped_skimage[600])
 
 fig.tight_layout(pad=1.0)
-show()
+# show()
+
+# Plot Phase in 3D
+X, Y = np.meshgrid(x_hor, y_ver)
+fig = plt.figure()
+ax6 = fig.add_subplot(111, projection='3d')
+# ax6.plot_wireframe(X, Y, measured_phase_unwrapped_skimage)
+ax6.plot_surface(X, Y, measured_phase_denoise_unwrapped_skimage, cmap=cm.hsv)
+ax6.set_xlabel('Pixel X')
+ax6.set_ylabel('Pixel Y')
+ax6.set_zlabel('Phase (rad)')
+#ax6.axes.set_xlim3d(left=100, right=1800)
+#ax6.axes.set_ylim3d(bottom=0, top=1199)
+ax6.axes.set_zlim3d(bottom=-2*np.pi, top=2*np.pi)
+
+
+plt.show()
